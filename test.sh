@@ -1,11 +1,21 @@
 #!/bin/bash
+set -e
 
-echo "Запуск Python скриптов..."
+APP_DIR="$(pwd)/app"
+VENV_DIR="$APP_DIR/venv"
 
-# Простой последовательный запуск
-python3 tests/conftest.py
-python3 tests/test_api.py
-python3 tests/test_ui.py
-python3 tests/test_unit.py
+echo "Starting deploy at $(date)"
 
-echo "Все скрипты выполнены!"
+if [ ! -d "$VENV_DIR" ]; then
+    python3 -m venv "$VENV_DIR"
+fi
+
+source "$VENV_DIR/bin/activate"
+
+if [ -f requirements.txt ]; then
+    pip install --upgrade pip
+    pip install -r requirements.txt
+fi
+
+
+pytest "test/*"
