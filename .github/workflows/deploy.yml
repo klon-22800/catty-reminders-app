@@ -23,7 +23,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no \
               -o ConnectTimeout=15 \
               -i ~/.ssh/vm_key \
-              -p 2249 \
+              -p 2449 \
               user@course.prafdin.ru "
             cd /home/user/Desktop/cat/catty-reminders-app
             echo 'Pulling latest code from github-actions branch...'
