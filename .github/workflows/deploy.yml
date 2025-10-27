@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches: [ github-actions ] 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/vm_key
+          chmod 600 ~/.ssh/vm_key
+
+      - name: Deploy to VM
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=15 \
+              -i ~/.ssh/vm_key \
+              -p 2249 \
+              user@course.prafdin.ru "
+            cd /home/user/Desktop/cat/catty-reminders-app
+            echo 'Pulling latest code from github-actions branch...'
+            git pull origin github-actions
+            echo 'Running deploy.sh...'
+            ./deploy.sh
+          "
