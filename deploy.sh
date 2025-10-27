@@ -1,27 +1,26 @@
 #!/bin/bash
 set -e
 
-APP_DIR="$(pwd)/app"
+APP_DIR="/home/user/Desktop/cat/catty-reminders-app"
 VENV_DIR="$APP_DIR/venv"
+LOG_FILE="$APP_DIR/uvicorn.log"
+PORT=8181
 
-echo "Starting deploy at $(date)"
+echo "🚀 Starting deploy at $(date)"
+cd "$APP_DIR"
 
-if [ ! -d "$VENV_DIR" ]; then
-    python3 -m venv "$VENV_DIR"
-fi
-
+# Активируем venv
 source "$VENV_DIR/bin/activate"
 
-if [ -f requirements.txt ]; then
-    pip install --upgrade pip
-    pip install -r requirements.txt
-fi
-
-PID=$(pgrep -f "uvicorn app.main:app")
+# Ищем и убиваем старый uvicorn (если работает)
+PID=$(pgrep -f "uvicorn app.main:app --port $PORT" || true)
 if [ ! -z "$PID" ]; then
-    kill -9 $PID
+  echo "🛑 Останавливаем старый процесс uvicorn (PID=$PID)..."
+  kill -9 $PID
 fi
 
-nohup uvicorn app.main:app --host 0.0.0.0 --port 8181 > uvicorn.log 2>&1 &
+# Запуск нового uvicorn
+echo "🔄 Запуск нового uvicorn на порту $PORT..."
+nohup uvicorn app.main:app --host 0.0.0.0 --port $PORT > "$LOG_FILE" 2>&1 &
 
-echo "Deploy completed at $(date)"
+echo "✅ Deploy completed at $(date)"
