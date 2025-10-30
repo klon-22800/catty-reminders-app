@@ -8,7 +8,7 @@ PORT=8181
 
 echo "🚀 Starting deploy at $(date)"
 cd "$APP_DIR"
-
+git pull
 # Активируем venv
 source "$VENV_DIR/bin/activate"
 
