@@ -25,9 +25,20 @@ jobs:
               -i ~/.ssh/vm_key \
               -p 2449 \
               user@course.prafdin.ru "
-            cd /home/user/Desktop/cat/catty-reminders-app
-            echo 'Pulling latest code from github-actions branch...'
-            git pull origin github-actions
-            echo 'Running deploy.sh...'
-            ./deploy.sh
-          "
+
+          echo 'Pulling latest Docker image...'
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          docker pull ghcr.io/klon-22800/catty-reminders:latest
+
+          echo 'Stopping old container if exists...'
+          docker stop catty-app  true
+
+          echo 'Starting new container...'
+          docker run -d \
+            --name catty-app \
+            -p 8181:8181 \
+            --restart unless-stopped \
+            ghcr.io/klon-22800/catty-reminders:latest
+
+          echo '✅ Deployment completed!'
+        "
