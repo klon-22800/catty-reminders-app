@@ -1,0 +1,9 @@
+services:
+  catty-app:
+    build: .
+    container_name: catty-app
+    ports:
+      - "8181:8181"   
+    environment:
+      - PORT=8181
+    restart: unless-stopped
