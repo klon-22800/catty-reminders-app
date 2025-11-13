@@ -38,7 +38,14 @@ jobs:
     - name: Run tests inside container
       run: |
         echo "Running tests inside Docker container..."
-        docker run --rm ghcr.io/${{ github.repository_owner }}/catty-reminders:test pytest -v || (echo "Tests failed" && exit 1)
+        
+        docker run -d --name catty-test -p 8181:8181 ghcr.io/${{ github.repository_owner }}/catty-reminders:test
+        
+        sleep 5
+        
+        docker run --rm --network host ghcr.io/${{ github.repository_owner }}/catty-reminders:test pytest -v || (echo "Tests failed" && exit 1)
+        
+        docker stop catty-test || true
         echo "Tests passed successfully"
 
     - name: Build and push Docker image (to GHCR)
