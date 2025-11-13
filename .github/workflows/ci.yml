@@ -26,8 +26,22 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Build and push Docker image
+
+    - name: Build Docker image (for testing)
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        push: false
+        tags: catty-reminders:test
+
+    - name: Run tests inside container
+      run: |
+        echo "Running tests inside Docker container..."
+        docker run --rm catty-reminders:test pytest -v || (echo "Tests failed" && exit 1)
+        echo "Tests passed successfully"
+
+    - name: Build and push Docker image (to GHCR)
+      if: success()
       uses: docker/build-push-action@v6
       with:
         context: .
