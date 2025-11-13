@@ -32,12 +32,12 @@ jobs:
       with:
         context: .
         push: false
-        tags: catty-reminders:test
+        tags: ghcr.io/${{ github.repository_owner }}/catty-reminders:test
 
     - name: Run tests inside container
       run: |
         echo "Running tests inside Docker container..."
-        docker run --rm catty-reminders:test pytest -v || (echo "Tests failed" && exit 1)
+        docker run --rm ghcr.io/${{ github.repository_owner }}/catty-reminders:test pytest -v || (echo "Tests failed" && exit 1)
         echo "Tests passed successfully"
 
     - name: Build and push Docker image (to GHCR)
