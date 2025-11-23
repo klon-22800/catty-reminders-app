@@ -25,6 +25,9 @@ jobs:
               -i ~/.ssh/vm_key \
               -p 2449 \
               user@course.prafdin.ru "
+
+            echo 'Pulling latest Docker image...'
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
             
             cd ~/Desktop/cat/catty-reminders-app || exit 1
             echo 'Pulling latest app image...'
