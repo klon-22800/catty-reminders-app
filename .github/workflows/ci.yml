@@ -1,3 +1,8 @@
+name: CI
+
+on:
+  push:
+    branches: [ multicontainers ]
 jobs:
   docker:
     runs-on: ubuntu-latest
