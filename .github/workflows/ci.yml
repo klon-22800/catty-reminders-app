@@ -20,13 +20,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and start services
-        run: docker-compose up -d --build
+        run: docker compose up -d --build
 
       - name: Run tests inside app container
-        run: docker-compose run --rm app pytest -v
+        run: docker compose run --rm app pytest -v
 
       - name: Tear down services
-        run: docker-compose down
+        run: docker compose down
 
       - name: Build and push Docker image
         if: success()
