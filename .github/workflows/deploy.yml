@@ -31,13 +31,13 @@ jobs:
             
             cd ~/Desktop/cat/catty-reminders-app || exit 1
             echo 'Pulling latest app image...'
-            docker pull ghcr.io/klon-22800/catty-reminders:latest
+            docker compose -f docker-compose.yml pull
 
             echo 'Stopping old stack if exists...'
-            docker compose down || true
+            docker compose -f docker-compose.yml down || true
 
             echo 'Starting new stack...'
-            docker compose up -d
+            docker compose -f docker-compose.yml up -d
 
             echo '✅ Deployment completed!'
           "
