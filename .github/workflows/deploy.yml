@@ -31,7 +31,7 @@ jobs:
             
             cd ~/Desktop/cat/catty-reminders-app || exit 1
             echo 'Pulling latest app image...'
-            docker compose pull app
+            docker pull ghcr.io/klon-22800/catty-reminders:latest
 
             echo 'Stopping old stack if exists...'
             docker compose down || true
