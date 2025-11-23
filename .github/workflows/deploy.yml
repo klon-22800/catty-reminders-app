@@ -26,15 +26,15 @@ jobs:
               -p 2449 \
               user@course.prafdin.ru "
             
-            cd /path/to/compose/dir || exit 1
+            cd ~/Desktop/cat/catty-reminders-app || exit 1
             echo 'Pulling latest app image...'
-            docker-compose pull app
+            docker compose pull app
 
             echo 'Stopping old stack if exists...'
-            docker-compose down || true
+            docker compose down || true
 
             echo 'Starting new stack...'
-            docker-compose up -d
+            docker compose up -d
 
             echo '✅ Deployment completed!'
           "
