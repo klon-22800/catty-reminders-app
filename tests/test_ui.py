@@ -25,6 +25,7 @@ from testlib.inputs import User
 # --------------------------------------------------------------------------------
 
 def test_successful_login(page: Page, user: User):
+  
 
   # Given the login page is displayed  
   page.goto('/login')
